@@ -1,61 +1,61 @@
-// 문제 리스트 정의
-const questions = [
-    { text: "6 x 7 = ?", answer: 42 },
-    { text: "6 x 4 = ?", answer: 24 },
-    { text: "6 x 5 = ?", answer: 30 },
-    { text: "6 x 1 = ?", answer: 6 },
-    { text: "6 x 6 = ?", answer: 36 },
-    { text: "5 x 4 = ?", answer: 20 },
-    { text: "6 x 2 = ?", answer: 12 },
-    { text: "5 x 2 = ?", answer: 10 },
-    { text: "5 x 7 = ?", answer: 35 },
-    { text: "3 x 8 = ?", answer: 24 },
-    { text: "6 x 3 = ?", answer: 18 },
-    { text: "4 x 9 = ?", answer: 36 },
-    { text: "5 x 9 = ?", answer: 45 },
-    { text: "4 x 3 = ?", answer: 12 },
-    { text: "8 x 2 = ?", answer: 16 },
-    { text: "7 x 3 = ?", answer: 21 },
-    { text: "9 x 1 = ?", answer: 9 },
-    { text: "8 x 3 = ?", answer: 24 },
-    { text: "6 x 2 = ?", answer: 12 },
-    { text: "5 x 10 = ?", answer: 50 }
-];
-
-let incorrectAnswers = []; // 틀린 문제 저장
-
-// 문제 보여주는 함수
-function loadQuestions() {
-    const container = document.getElementById('questionContainer');
-    container.innerHTML = ''; // 기존 내용 초기화
-
-    questions.forEach((question, index) => {
-        const questionElement = document.createElement('div');
-        questionElement.innerHTML = `
-            <label>${question.text}</label>
-            <input type="number" id="answer${index}" required>
-        `;
-        container.appendChild(questionElement);
-    });
-}
-
-// 제출 버튼 이벤트 리스너
-document.getElementById('submitAnswer').addEventListener('click', () => {
-    questions.forEach((question, index) => {
-        const userAnswer = parseInt(document.getElementById(`answer${index}`).value); // 사용자가 입력한 답
-        if (userAnswer !== question.answer) { // 틀린 문제인가 확인
-            incorrectAnswers.push(question); // 틀린 문제 저장
+document.addEventListener('DOMContentLoaded', function() {
+    const selectionPage = document.getElementById('selection-page');
+    const problemPage = document.getElementById('problem-page');
+    const problemList = document.getElementById('problem-list');
+    const currentDan = document.getElementById('current-dan');
+    const submitBtn = document.getElementById('submit-btn');
+    // 각 단 버튼에 이벤트 리스너 추가
+    for(let i = 1; i <= 9; i++) {
+        const button = document.getElementById(`dan${i}`);
+        button.addEventListener('click', () => showProblems(i));
+    }
+    document.getElementById('danAll').addEventListener('click', () => showProblems('all'));
+    function showProblems(dan) {
+        selectionPage.style.display = 'none';
+        problemPage.style.display = 'block';
+        currentDan.textContent = dan === 'all' ? '1~9단' : `${dan}단`;
+        problemList.innerHTML = '';
+        if(dan === 'all') {
+            // 1~9단에서 랜덤하게 5문제 생성
+            for(let i = 0; i < 5; i++) {
+                const num1 = Math.floor(Math.random() * 9) + 1;
+                const num2 = Math.floor(Math.random() * 9) + 1;
+                createProblem(num1, num2);
+            }
+        } else {
+            // 선택한 단의 1~9까지 문제 생성
+            for(let i = 1; i <= 9; i++) {
+                createProblem(dan, i);
+            }
         }
-    });
-
-    if (incorrectAnswers.length > 0) {
-        // 틀린 문제가 있으면 Step 2로 이동
-        window.localStorage.setItem('incorrectAnswers', JSON.stringify(incorrectAnswers));
-        window.location.href = 'step2.html'; // Step 2로 이동
-    } else {
-        alert("모든 문제를 정답으로 풀었습니다!"); // 모든 문제를 맞춘 경우
+    }
+    function createProblem(num1, num2) {
+        const problemDiv = document.createElement('div');
+        problemDiv.className = 'problem-item';
+        problemDiv.innerHTML = `
+            ${num1} × ${num2} = <input type="number" data-answer="${num1 * num2}">
+        `;
+        problemList.appendChild(problemDiv);
+    }
+    submitBtn.addEventListener('click', checkAnswers);
+    function checkAnswers() {
+        let correct = 0;
+        const inputs = problemList.querySelectorAll('input');
+        inputs.forEach(input => {
+            const userAnswer = parseInt(input.value);
+            const correctAnswer = parseInt(input.dataset.answer);
+            if(userAnswer === correctAnswer) {
+                correct++;
+                input.style.backgroundColor = '#e8f5e9';
+            } else {
+                input.style.backgroundColor = '#ffebee';
+            }
+        });
+        alert(`${inputs.length}문제 중 ${correct}문제 맞았습니다!`);
+        // 3초 후 선택 페이지로 돌아가기
+        setTimeout(() => {
+            selectionPage.style.display = 'block';
+            problemPage.style.display = 'none';
+        }, 3000);
     }
 });
-
-// 페이지 로드 시 질문 로드
-window.onload = loadQuestions;
