@@ -1,27 +1,30 @@
-// 틀린 문제들 저장
-let incorrectAnswers = JSON.parse(localStorage.getItem('incorrectAnswers')) || [];
+// STEP2에서 사용할 스크립트
+let incorrectAnswers = []; // 틀린 문제 저장
+let timeStart = Date.now();
 
-// 결과 보여주기 위한 함수
-function displayResults() {
-    const resultsContainer = document.getElementById('resultsContainer');
-    if (incorrectAnswers.length === 0) {
-        resultsContainer.innerHTML = '<h2>모든 문제를 맞췄습니다! 🎉</h2>';
+function submitAnswer() {
+    const input = document.getElementById('answerInput').value;
+    const question = questions[currentQuestion];
+
+    if (input != question.answer) {
+        incorrectAnswers.push(question);
+    }
+
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+        displayQuestion();
     } else {
-        // 틀린 문제 표시
-        let resultHtml = '<h2>틀린 문제들:</h2><ul>';
-        incorrectAnswers.forEach(question => {
-            resultHtml += `<li>${question.text} 정답: ${question.answer}</li>`;
-        });
-        resultHtml += '</ul>';
-        resultsContainer.innerHTML = resultHtml;
+        displayResult();
     }
 }
 
-// 초기화 작업
-function initialize() {
-    // 페이지 로드 시 결과 표시
-    displayResults();
+function displayQuestion() {
+    const question = questions[currentQuestion];
+    document.getElementById('question').innerText = question.problem + ' = ';
+    document.getElementById('answerInput').value = '';
 }
 
-// 문서 로드 시 초기화
-document.addEventListener('DOMContentLoaded', initialize);
+function displayResult() {
+    const timeTaken = (Date.now() - timeStart) / 1000; // 초 단위
+    document.getElementById('result').innerText = `틀린 문제 개수: ${incorrectAnswers.length}, 소요 시간: ${timeTaken}초`;
+}
