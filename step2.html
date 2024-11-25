@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 2: 결과</title>
     <link rel="stylesheet" href="style.css">
+    <title>STEP 2</title>
 </head>
 <body>
     <div class="container">
-        <h1>결과</h1>
-        <div id="score"></div>
-        <div id="timeTaken"></div>
+        <h2>STEP 2: 틀린 문제 다시 풀기</h2>
+        <div id="question"></div>
+        <input type="number" id="answerInput" placeholder="답을 입력하세요">
+        <button onclick="submitAnswer()">제출</button>
+        <div id="result"></div>
     </div>
+    <script src="multipletest.js"></script>
     <script src="step2.js"></script>
 </body>
 </html>
