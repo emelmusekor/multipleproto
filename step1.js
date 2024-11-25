@@ -22,33 +22,42 @@ const questions = [
     { text: "4 x 3 = ?", answer: 12 }
 ];
 
-let currentQuestionIndex = 0; // 현재 질문 인덱스
 let incorrectAnswers = []; // 틀린 문제 저장
 
 // 문제 보여주는 함수
-function loadQuestion() {
-    const question = questions[currentQuestionIndex];
-    document.getElementById('questionContainer').innerText = question.text;
+function loadQuestions() {
+    const container = document.getElementById('questionContainer');
+    container.innerHTML = ''; // 기존 문제 내용 초기화
+
+    questions.forEach((question, index) => {
+        // 각 문제에 대한 입력 필드 추가
+        const questionElement = document.createElement('div');
+        questionElement.innerHTML = `
+            <label>${question.text}</label>
+            <input type="number" id="answer${index}" required>
+        `;
+        container.appendChild(questionElement);
+    });
 }
 
 // 제출 버튼 이벤트 리스너
 document.getElementById('submitAnswer').addEventListener('click', () => {
-    const userAnswer = parseInt(document.getElementById('answer').value); // 사용자가 입력한 답
+    questions.forEach((question, index) => {
+        const userAnswer = parseInt(document.getElementById(`answer${index}`).value); // 사용자가 입력한 답
+        if (userAnswer !== question.answer) { // 틀린 문제 확인
+            incorrectAnswers.push(question); // 틀린 문제 저장
+        }
+    });
 
-    if (userAnswer === questions[currentQuestionIndex].answer) { // 정답 확인
-        currentQuestionIndex++;
-    } else {
-        incorrectAnswers.push(questions[currentQuestionIndex]); // 틀린 문제 저장
-        currentQuestionIndex++;
-    }
-
-    if (currentQuestionIndex < questions.length) {
-        loadQuestion(); // 다음 질문 로드
-    } else {
-        // 모든 문제를 푼 경우, 결과 페이지로 이동
+    if (incorrectAnswers.length > 0) {
+        // 틀린 문제가 있으면 Step 2로 이동
+        window.localStorage.setItem('incorrectAnswers', JSON.stringify(incorrectAnswers));
         window.location.href = 'step2.html'; // Step 2로 이동
+    } else {
+        alert("모든 문제를 정답으로 풀었습니다!"); // 모든 문제를 맞춘 경우
     }
 });
 
-// 페이지 로드 시 첫 번째 질문 보여주기
-window.onload = loadQuestion;
+// 페이지 로드 시 질문 로드
+window.onload = loadQuestions;
+
