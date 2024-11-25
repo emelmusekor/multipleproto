@@ -1,21 +1,26 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f3f4f6;
-    color: #333;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
     margin: 0;
-    padding: 20px;
 }
-
-h1 {
-    color: #4A90E2;
+.container {
+    text-align: center;
 }
-
-div {
-    margin-top: 20px;
+.step-button {
+    padding: 15px 30px;
+    font-size: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
-
-a {
-    text-decoration: none;
-    color: #4A90E2;
-    font-size: 1.2em;
+.step-button:hover {
+    background-color: #45a049;
 }
