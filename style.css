@@ -1,48 +1,66 @@
 body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
+
 .container {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
 }
-h1 {
-  color: #333;
+
+.phone-container {
+    max-width: 400px;
+    margin: 0 auto;
+    border: 2px solid #333;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-#problem {
-  font-size: 24px;
-  margin: 20px 0;
+
+.header {
+    background-color: #4169E1;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
 }
-input {
-  font-size: 18px;
-  padding: 5px;
-  width: 100px;
-  margin-right: 10px;
+
+label {
+    display: block;
+    margin: 10px 0;
 }
+
+input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
 button {
-  font-size: 18px;
-  padding: 5px 10px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
 }
+
 button:hover {
-  background-color: #45a049;
+    background-color: #45a049;
 }
-#result {
-  font-size: 18px;
-  margin-top: 20px;
-}
-#score {
-  font-size: 18px;
-  margin-top: 10px;
+
+#stats, #retry-stats {
+    margin-top: 20px;
+    font-size: 18px;
 }
